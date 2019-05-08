@@ -108,6 +108,7 @@ section .data
 printNumber_RefRet      resb    64      ; Возвратная ссылка
 printNumber_bais:       resb    64      ; Система исчисления
 printNumber_Number:     resb    64      ; Число
+section .text
 printNumber:
     mov qword [printNumber__Ind], 1
     
