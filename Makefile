@@ -1,15 +1,20 @@
-all: compil link run
+all: compil link start
 
 compil:
-	nasm -felf64 printf.asm
+	nasm -felf64  printf.asm
+	gcc -no-pie -c main.c -o main.o
 
 link:
-	ld printf.o -o printf
-run:
-	./printf
+	gcc -no-pie -o run printf.o main.o
+
+start:
+	./run s
+
+test: compil link 
+	./run t
 
 debug: compil link
-	gdb ./printf
+	gdb ./run
 
 clean:
-	rm printf printf.o
+	rm printf.o run main.o

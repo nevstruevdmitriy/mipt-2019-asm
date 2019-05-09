@@ -1,6 +1,7 @@
-global	_start
+global run
+global test
 
-jmp _start
+jmp run
 
 section .data
 retRef: resb 64                         ; Переменная хранящщая в себе ссылку возврата
@@ -320,22 +321,36 @@ printf:
     push qword [printf_RetRef]
     ret
 
-_start:
+run:
     push 31
     push 100
     push 3802
     push qword strParam3
     push qword strParam1
-    push qword [strParam2]
-    push qword [strParam2]
+    push 113113
+    push 113113
     push qword strFormat
 
     call printf
 
-    mov eax, 1
-    mov ebx, 0
-    int 80h
+    ret
+; Функция, для тестирования 
+test:
+    mov rax, qword [strPrarmN]
 
+    push rax
+    push 10
+    call printNumber                ; Должно вывести 113113, выводит непонятно что
+
+    call printEnter
+
+    mov rax, 113113
+
+    push rax
+    push 10
+    call printNumber                ; Должно вывести 113113, что и выводит
+
+    ret
 section .data
 
 strHex:
@@ -350,5 +365,9 @@ strParam1:
 strParam3:
     db "love", 0x0A
 
-strParam2:
-    db 134
+strPrarm4:
+    db "%b", 0x0A
+
+strPrarmN:
+    db 113113
+
