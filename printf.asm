@@ -1,5 +1,6 @@
 global run
 global test
+global my_printf
 
 jmp run
 
@@ -321,18 +322,23 @@ printf:
     push qword [printf_RetRef]
     ret
 
+; Функция - обёртка над printf
+section .data
+run_RetRef:     resb        64          ; Возвратная ссылка
+section .text
 run:
-    push 31
-    push 100
-    push 3802
-    push qword strParam3
-    push qword strParam1
-    push 113113
-    push 113113
-    push qword strFormat
+    pop qword [run_RetRef]
 
+    push r9
+    push r8
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    
     call printf
 
+    push qword [run_RetRef]
     ret
 ; Функция, для тестирования 
 test:
@@ -340,7 +346,7 @@ test:
 
     push rax
     push 10
-    call printNumber                ; Должно вывести 113113, выводит непонятно что
+    call printNumber                    ; Должно вывести 113113, выводит непонятно что
 
     call printEnter
 
@@ -348,7 +354,7 @@ test:
 
     push rax
     push 10
-    call printNumber                ; Должно вывести 113113, что и выводит
+    call printNumber                    ; Должно вывести 113113, что и выводит
 
     ret
 section .data
